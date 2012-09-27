@@ -98,10 +98,10 @@ public class BBCodeParserTest extends TestCase {
     
     //OTHER CASE 2
     {
-    bbCode = "[B] my italic test [/b]";
+    bbCode = "[B] my bold test [/b]";
     parser = newParser(bbCode);
     got = parser.process();
-    assertEquals("<i> my bold test </i>", got);
+    assertEquals("<b> my bold test </b>", got);
     }
   }
   
