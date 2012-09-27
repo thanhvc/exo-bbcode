@@ -148,4 +148,11 @@ public class BBCodeParserTest extends TestCase {
     assertEquals("<a href='ftp://example.com/file-explorer'>ftp://example.com/file-explorer</a>", got);
   }
   
+  public void testImage() throws Exception {
+    String bbCode = "[img]http://example.com/file-explorer.png[/img]";
+    DefaultBBCodeParser parser = newParser(bbCode);
+    String got = parser.process();
+    assertEquals("<img src='http://example.com/file-explorer.png' alt=''></img>", got);
+  }
+  
 }

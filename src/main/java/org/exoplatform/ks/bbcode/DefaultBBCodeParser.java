@@ -45,6 +45,7 @@ public class DefaultBBCodeParser extends BBCodeParser {
   protected void processEol(String s)    { sb.append(s); }
   protected void processEmail(String s)  { addHref("mailto:" + s, s); }
   protected void processUrl(String s)    { addHref(s, s); }
+  protected void processImgUrl(String s) { addImage(s); }
   protected void processFtp(String s)    { addHref("ftp://" + s, s); }
   protected void processWww(String s)    { addHref("http://" + s, s); }
 
@@ -62,5 +63,9 @@ public class DefaultBBCodeParser extends BBCodeParser {
 
   private void addHref(String href, String display) {
       sb.append("<a href='" + href + "'>" + display + "</a>");
+  }
+  
+  private void addImage(String href) {
+    sb.append("<img src='" + href + "' alt=''></img>");
   }
 }

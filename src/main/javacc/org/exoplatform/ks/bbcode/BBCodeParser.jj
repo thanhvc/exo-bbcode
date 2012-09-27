@@ -22,6 +22,7 @@ public abstract class BBCodeParser {
     public static final String TAG_URL = "url";
     public static final String TAG_COLOR = "span";
     public static final String TAG_SIZE = "span";
+    public static final String TAG_IMG = "img";
 
     private BBCodeTagCloseHelper tagCloseHelper = new BBCodeTagCloseHelper(this);
 
@@ -29,6 +30,7 @@ public abstract class BBCodeParser {
     protected abstract void processSpace(String s);
     protected abstract void processEol(String s);
     protected abstract void processUrl(String s);
+    protected abstract void processImgUrl(String s);
     protected abstract void processEmail(String s);
     protected abstract void processFtp(String s);
     protected abstract void processWww(String s);
@@ -70,6 +72,7 @@ TOKEN :
 |   <COLOR_TAG_END: "[/color]" >
 |   <SIZE_TAG_START:    "[size=" (["0"-"9"]){1,3} "]" >
 |   <SIZE_TAG_END:      "[/size]" >
+|   <IMG_FULL_TAG:  "[img]" <URL_FULL> "[/img]" | "[IMG]" <URL_FULL> "[/IMG]">
 |   <URL_FULL_TAG:  "[url]" <URL_FULL> "[/url]" | "[URL]" <URL_FULL> "[/URL]">
 |   <BAD_START:     "[" >
 |   <ESCAPED_START: "[[" >
@@ -130,7 +133,7 @@ void Input(): { }
         | colorTagOpen() | colorTagClose()
         | urlTagOpen() | urlTagClose()
         | urlEmailTagOpen() | urlWwwTagOpen() | urlFtpTagOpen()
-        | urlFullTag()
+        | urlFullTag() | imageFullTag()
         | simpleContent()
     )* <EOF>
     {
@@ -186,6 +189,19 @@ void urlFullTag() : //[url]http://example.com[/url]
         String image = t.image;
         String val = image.substring(5,image.length()-6).replace("[[", "[");
         processUrl(val);
+    }
+}
+
+void imageFullTag() : //[img]http://example.com[/img]
+{
+    Token t = null;
+}
+{
+    t=<IMG_FULL_TAG>
+    {
+        String image = t.image;
+        String val = image.substring(5,image.length()-6).replace("[[", "[");
+        processImgUrl(val);
     }
 }
 
